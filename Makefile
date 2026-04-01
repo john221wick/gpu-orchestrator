@@ -5,12 +5,39 @@ CPPFLAGS += -Iinclude -Ithird_party
 CXXFLAGS += -std=c++17 -Wall -Wextra -O2 -pthread
 LDLIBS += -lpthread
 
-ifneq ($(strip $(NVML_INCLUDE_DIR)),)
-REAL_CPPFLAGS += -I$(NVML_INCLUDE_DIR)
+NVML_INCLUDE_CANDIDATES := \
+	$(strip $(NVML_INCLUDE_DIR)) \
+	$(strip $(CUDA_HOME))/include \
+	$(strip $(CUDA_PATH))/include \
+	/usr/include \
+	/usr/include/nvidia/gdk \
+	/usr/local/cuda/include \
+	/opt/cuda/include
+
+NVML_LIB_CANDIDATES := \
+	$(strip $(NVML_LIB_DIR)) \
+	$(strip $(CUDA_HOME))/lib64 \
+	$(strip $(CUDA_HOME))/targets/x86_64-linux/lib \
+	$(strip $(CUDA_PATH))/lib64 \
+	/usr/lib64 \
+	/usr/lib/x86_64-linux-gnu \
+	/usr/lib/wsl/lib \
+	/usr/local/cuda/lib64 \
+	/opt/cuda/lib64 \
+	/usr/lib
+
+NVML_HEADER := $(firstword $(foreach dir,$(NVML_INCLUDE_CANDIDATES),$(wildcard $(dir)/nvml.h)))
+NVML_HEADER_DIR := $(patsubst %/nvml.h,%,$(NVML_HEADER))
+
+NVML_LIBRARY := $(firstword $(foreach dir,$(NVML_LIB_CANDIDATES),$(wildcard $(dir)/libnvidia-ml.so) $(wildcard $(dir)/libnvidia-ml.so.1)))
+NVML_LIBRARY_DIR := $(patsubst %/libnvidia-ml.so,%,$(patsubst %/libnvidia-ml.so.1,%,$(NVML_LIBRARY)))
+
+ifneq ($(strip $(NVML_HEADER_DIR)),)
+REAL_CPPFLAGS += -I$(NVML_HEADER_DIR)
 endif
 
-ifneq ($(strip $(NVML_LIB_DIR)),)
-REAL_LDFLAGS += -L$(NVML_LIB_DIR)
+ifneq ($(strip $(NVML_LIBRARY_DIR)),)
+REAL_LDFLAGS += -L$(NVML_LIBRARY_DIR)
 endif
 
 BUILD_DIR := build
@@ -103,12 +130,14 @@ real: check-real gpu-scheduler gpu-submit gpu-status
 tools: gpu-submit gpu-status
 
 check-real:
-	@if [ -n "$(NVML_INCLUDE_DIR)" ] && [ -f "$(NVML_INCLUDE_DIR)/nvml.h" ]; then \
-		exit 0; \
-	elif [ -f /usr/include/nvml.h ] || [ -f /usr/local/cuda/include/nvml.h ] || [ -f /opt/cuda/include/nvml.h ]; then \
-		exit 0; \
-	else \
-		echo "NVML headers not found. Use 'make' for the mock build or set NVML_INCLUDE_DIR." >&2; \
+	@if [ -z "$(NVML_HEADER_DIR)" ]; then \
+		echo "NVML headers not found." >&2; \
+		echo "Set NVML_INCLUDE_DIR=/path/to/include if nvml.h is installed in a non-standard location." >&2; \
+		exit 1; \
+	fi
+	@if [ -z "$(NVML_LIBRARY_DIR)" ] && [ -z "$(NVML_LIB_DIR)" ]; then \
+		echo "NVML library not found in common locations." >&2; \
+		echo "Set NVML_LIB_DIR=/path/to/lib if libnvidia-ml is installed in a non-standard location." >&2; \
 		exit 1; \
 	fi
 
@@ -251,6 +280,8 @@ help:
 	@echo "  SCHEDULER_LOG=$(SCHEDULER_LOG)"
 	@echo "  NVML_INCLUDE_DIR=$(NVML_INCLUDE_DIR)"
 	@echo "  NVML_LIB_DIR=$(NVML_LIB_DIR)"
+	@echo "  detected NVML header dir=$(NVML_HEADER_DIR)"
+	@echo "  detected NVML lib dir=$(NVML_LIBRARY_DIR)"
 
 $(COMMON_DIR)/%.o: %.cpp
 	@mkdir -p $(dir $@)
