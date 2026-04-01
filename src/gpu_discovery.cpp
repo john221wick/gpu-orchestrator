@@ -52,8 +52,7 @@ std::vector<GPUDevice> discover_gpus() {
     devices.reserve(count);
 
     for (unsigned int i = 0; i < count; i++) {
-        GPUDevice dev;
-        memset(&dev, 0, sizeof(dev));
+        GPUDevice dev{};
         dev.id = (int)i;
 
         NVML_CHECK(nvmlDeviceGetHandleByIndex(i, &dev.handle));
@@ -70,7 +69,7 @@ std::vector<GPUDevice> discover_gpus() {
         NVML_CHECK(nvmlDeviceGetNumGpuCores(dev.handle, &dev.sm_count));
 
         // Temperature
-        NVML_CHECK(nvmlDeviceGetTemperature(dev.handle, 0 /* NVML_TEMPERATURE_GPU */, &dev.temperature));
+        NVML_CHECK(nvmlDeviceGetTemperature(dev.handle, NVML_TEMPERATURE_GPU, &dev.temperature));
 
         // PCIe info
         nvmlPciInfo_t pci;

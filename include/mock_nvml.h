@@ -26,6 +26,10 @@ typedef enum {
     NVML_TOPOLOGY_SYSTEM       = 5,
 } nvmlGpuTopologyLevel_t;
 
+typedef enum {
+    NVML_TEMPERATURE_GPU = 0,
+} nvmlTemperatureSensors_t;
+
 typedef struct {
     unsigned int bus;
     unsigned int device;
@@ -107,7 +111,9 @@ inline nvmlReturn_t nvmlDeviceGetNumGpuCores(nvmlDevice_t, unsigned int* cores) 
     return NVML_SUCCESS;
 }
 
-inline nvmlReturn_t nvmlDeviceGetTemperature(nvmlDevice_t, int, unsigned int* temp) {
+inline nvmlReturn_t nvmlDeviceGetTemperature(
+    nvmlDevice_t, nvmlTemperatureSensors_t, unsigned int* temp)
+{
     *temp = 40;
     return NVML_SUCCESS;
 }

@@ -31,7 +31,8 @@ static Server*         g_server   = nullptr;
 static void signal_handler(int sig) {
     (void)sig;
     const char* msg = "[SIGNAL] Shutdown requested\n";
-    write(STDERR_FILENO, msg, strlen(msg));
+    ssize_t ignored = write(STDERR_FILENO, msg, strlen(msg));
+    (void)ignored;
     g_shutdown = true;
     if (g_server)  g_server->stop();
     if (g_sched)   g_sched->stop();

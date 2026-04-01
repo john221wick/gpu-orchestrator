@@ -154,7 +154,7 @@ void GPUStateTracker::refresh_vram() {
         if (!dev.is_busy) {
             dev.vram_free = dev.vram_total;
         }
-        nvmlDeviceGetTemperature(dev.handle, 0, &dev.temperature);
+        nvmlDeviceGetTemperature(dev.handle, NVML_TEMPERATURE_GPU, &dev.temperature);
 #else
         nvmlMemory_t mem;
         nvmlReturn_t r = nvmlDeviceGetMemoryInfo(dev.handle, &mem);
@@ -162,7 +162,7 @@ void GPUStateTracker::refresh_vram() {
             dev.vram_free = (size_t)mem.free;
         }
         // Also refresh temperature
-        nvmlDeviceGetTemperature(dev.handle, 0, &dev.temperature);
+        nvmlDeviceGetTemperature(dev.handle, NVML_TEMPERATURE_GPU, &dev.temperature);
 #endif
     }
 }
