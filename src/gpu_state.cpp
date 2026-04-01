@@ -61,6 +61,9 @@ void GPUStateTracker::mark_busy(
     size_t reserved_vram)
 {
     std::lock_guard<std::mutex> lock(mutex_);
+#ifndef USE_MOCK_NVML
+    (void)reserved_vram;
+#endif
     for (int id : gpu_ids) {
         if (id >= 0 && id < (int)devices_.size()) {
             devices_[id].is_busy      = true;

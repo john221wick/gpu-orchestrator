@@ -3,8 +3,16 @@
 Small single-node GPU scheduler written in C++.
 
 It runs a daemon, accepts JSON jobs over a Unix socket, and assigns free GPUs.
-For local development, the project also includes a mock NVML mode, so `make`
-works even on machines without NVIDIA drivers.
+For local development, the project includes a mock NVML mode, so `make` works
+even on machines without NVIDIA drivers.
+
+## Architecture
+
+![GPU Orchestrator Architecture](images/diagram.png)
+
+## Demo
+
+[Watch the video on YouTube](https://youtu.be/-Xjaw0xE1Zo)
 
 ## Quick start
 
@@ -25,6 +33,13 @@ make submit-fast
 Use `make real` on a Linux machine with NVIDIA drivers, `nvml.h`, and
 `libnvidia-ml` installed.
 
+To run the real scheduler:
+
+```bash
+make real-start
+./gpu-status
+```
+
 ## Useful targets
 
 - `make` - build the mock scheduler and CLI tools
@@ -32,6 +47,7 @@ Use `make real` on a Linux machine with NVIDIA drivers, `nvml.h`, and
 - `make test` - build and run unit tests
 - `make run` - run the mock scheduler in the foreground
 - `make start` - start the mock scheduler in the background
+- `make real-start` - start the real scheduler
 - `make status` - show scheduler status
 - `make submit-fast` - submit the sample fast job
 - `make clean` - remove build output
