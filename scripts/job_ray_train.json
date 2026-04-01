@@ -1,0 +1,12 @@
+{
+    "framework":    "ray_train",
+    "job_type":     "training",
+    "num_gpus":     2,
+    "needs_peer":   true,
+    "min_vram_gb":  4,
+    "priority":     2,
+    "script":       "scripts/ray_train_example.py",
+    "args":         ["--num-workers", "2", "--steps", "50", "--batch", "16"],
+    "working_dir":  "..",
+    "max_time_sec": 300
+}

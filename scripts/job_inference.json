@@ -1,0 +1,12 @@
+{
+    "framework":    "python",
+    "job_type":     "inference",
+    "num_gpus":     1,
+    "needs_peer":   false,
+    "min_vram_gb":  4,
+    "priority":     3,
+    "script":       "scripts/inference_example.py",
+    "args":         ["--port", "8080", "--model", "gpt2"],
+    "working_dir":  "..",
+    "max_time_sec": 0
+}

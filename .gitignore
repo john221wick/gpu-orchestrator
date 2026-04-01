@@ -1,0 +1,36 @@
+# Build output
+/build/
+/gpu-scheduler
+/gpu-scheduler-mock
+/gpu-submit
+/gpu-status
+/test-topology
+/test-queue
+/test-scheduler
+*.o
+*.d
+*.dSYM/
+
+# Logs
+*.log
+nohup.out
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.env
+*.egg-info/
+
+# Editors and OS files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Local scratch
+/lesson/

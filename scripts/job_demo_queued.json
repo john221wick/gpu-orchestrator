@@ -1,0 +1,12 @@
+{
+    "framework":    "python",
+    "job_type":     "inference",
+    "num_gpus":     2,
+    "needs_peer":   true,
+    "min_vram_gb":  12,
+    "priority":     3,
+    "script":       "scripts/mock_demo_job.py",
+    "args":         ["--name", "demo-queued", "--sleep", "20", "--heartbeat", "5"],
+    "working_dir":  "..",
+    "max_time_sec": 120
+}

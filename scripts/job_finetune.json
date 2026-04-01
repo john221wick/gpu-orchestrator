@@ -1,0 +1,12 @@
+{
+    "framework":    "deepspeed",
+    "job_type":     "finetuning",
+    "num_gpus":     2,
+    "needs_peer":   true,
+    "min_vram_gb":  10,
+    "priority":     1,
+    "script":       "scripts/finetune_example.py",
+    "args":         ["--steps", "100", "--batch", "4"],
+    "working_dir":  "..",
+    "max_time_sec": 600
+}

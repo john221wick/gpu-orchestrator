@@ -1,0 +1,12 @@
+{
+    "framework":    "hf_trainer",
+    "job_type":     "finetuning",
+    "num_gpus":     2,
+    "needs_peer":   true,
+    "min_vram_gb":  4,
+    "priority":     2,
+    "script":       "scripts/trainer_example.py",
+    "args":         ["--steps", "50", "--batch", "4", "--bf16"],
+    "working_dir":  "..",
+    "max_time_sec": 300
+}

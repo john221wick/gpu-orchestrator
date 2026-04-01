@@ -1,0 +1,21 @@
+{
+    "framework": "python",
+    "job_type": "inference",
+    "num_gpus": 1,
+    "needs_peer": false,
+    "min_vram_gb": 10,
+    "priority": 2,
+    "script": "scripts/chat_personal_model.py",
+    "args": [
+        "--model-name", "Qwen/Qwen3-4B-Instruct-2507",
+        "--adapter-path", "outputs/vast-personal-chat",
+        "--prompt", "Tell me one thing you know about Bhushan Bharat.",
+        "--system-prompt", "You are Bhushan personal AI assistant. Stay grounded in the fine-tuned data.",
+        "--max-new-tokens", "160",
+        "--temperature", "0.2",
+        "--top-p", "0.9",
+        "--load-in-4bit"
+    ],
+    "working_dir": "../../hf-finetuner",
+    "max_time_sec": 1800
+}

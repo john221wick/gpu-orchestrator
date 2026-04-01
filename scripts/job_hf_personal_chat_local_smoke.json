@@ -1,0 +1,30 @@
+{
+    "framework": "accelerate",
+    "job_type": "finetuning",
+    "num_gpus": 1,
+    "needs_peer": false,
+    "min_vram_gb": 0,
+    "priority": 1,
+    "script": "scripts/train_personal_chat.py",
+    "args": [
+        "--assistant-name", "Bhushan Bharat",
+        "--whatsapp-export", "tests/fixtures/whatsapp_export.txt",
+        "--local-dataset", "tests/fixtures/personal_prompt_completion.jsonl",
+        "--model-name", "Qwen/Qwen3-0.6B",
+        "--output-dir", "outputs/orchestrator-local-smoke",
+        "--train-mode", "lora",
+        "--no-load-in-4bit",
+        "--no-push-to-hub",
+        "--no-bf16",
+        "--no-fp16",
+        "--max-seq-length", "256",
+        "--per-device-batch-size", "1",
+        "--gradient-accumulation-steps", "1",
+        "--max-steps", "1",
+        "--save-steps", "1",
+        "--save-total-limit", "1",
+        "--logging-steps", "1"
+    ],
+    "working_dir": "../../hf-finetuner",
+    "max_time_sec": 1800
+}

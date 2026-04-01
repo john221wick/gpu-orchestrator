@@ -1,0 +1,29 @@
+{
+    "framework": "accelerate",
+    "job_type": "finetuning",
+    "num_gpus": 2,
+    "needs_peer": true,
+    "min_vram_gb": 20,
+    "priority": 1,
+    "script": "scripts/train_personal_chat.py",
+    "args": [
+        "--assistant-name", "SET-YOUR-WHATSAPP-NAME",
+        "--whatsapp-export", "data/whatsapp/export.txt",
+        "--hub-dataset", "HuggingFaceH4/ultrachat_200k:default:train_sft",
+        "--model-name", "Qwen/Qwen3-4B-Instruct-2507",
+        "--output-dir", "outputs/vast-personal-chat",
+        "--train-mode", "lora",
+        "--push-to-hub",
+        "--hub-model-id", "SET-YOUR-HF-USERNAME/SET-YOUR-REPO",
+        "--bf16",
+        "--epochs", "2",
+        "--per-device-batch-size", "2",
+        "--gradient-accumulation-steps", "8",
+        "--save-steps", "10",
+        "--hub-max-samples", "4000",
+        "--personal-repeat", "6",
+        "--max-seq-length", "2048"
+    ],
+    "working_dir": "../../hf-finetuner",
+    "max_time_sec": 43200
+}

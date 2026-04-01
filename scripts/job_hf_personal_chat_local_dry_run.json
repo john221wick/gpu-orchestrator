@@ -1,0 +1,21 @@
+{
+    "framework": "accelerate",
+    "job_type": "finetuning",
+    "num_gpus": 1,
+    "needs_peer": false,
+    "min_vram_gb": 0,
+    "priority": 1,
+    "script": "scripts/train_personal_chat.py",
+    "args": [
+        "--assistant-name", "Bhushan Bharat",
+        "--whatsapp-export", "tests/fixtures/whatsapp_export.txt",
+        "--local-dataset", "tests/fixtures/personal_prompt_completion.jsonl",
+        "--output-dir", "outputs/orchestrator-local-dry-run",
+        "--dry-run-data",
+        "--preview-samples", "2",
+        "--no-bf16",
+        "--no-fp16"
+    ],
+    "working_dir": "../../hf-finetuner",
+    "max_time_sec": 600
+}
